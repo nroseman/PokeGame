@@ -1,7 +1,8 @@
-venv/*
 data/testMapLayers_Battlezone.csv
 data/testMapLayers_Buildings.csv
 data/testMapLayers_Land.csv
 data/testMapLayers_Trees.csv
 data/testMapLayers_Path.csv
-__pycache__/player.cpython-310.pyc
+__pycache__/*
+.venv/*
+main.py
