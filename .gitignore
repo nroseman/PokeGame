@@ -6,3 +6,4 @@ data/testMapLayers_Path.csv
 __pycache__/*
 .venv/*
 main.py
+test.py
