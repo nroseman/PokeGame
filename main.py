@@ -146,7 +146,7 @@ while running:
                     boundary = boundary.move_ip(
                         (move_direction['left']*p1.moving))
                 # set correct image for animation
-                p1.update(dx)
+                p1.update(dx, tile_size)
                 # draw background
                 screen.blit(background, background_loc)
                 # draw player
@@ -175,7 +175,7 @@ while running:
                     boundary = boundary.move_ip(
                         (move_direction['down']*p1.moving))
                 # set correct image for animation
-                p1.update(dx)
+                p1.update(dx, tile_size)
                 # draw background
                 screen.blit(background, background_loc)
                 # draw player
@@ -204,7 +204,7 @@ while running:
                     boundary = boundary.move_ip(
                         (move_direction['right']*p1.moving))
                 # set correct image for animation
-                p1.update(dx)
+                p1.update(dx, tile_size)
                 # draw background
                 screen.blit(background, background_loc)
                 # draw player
@@ -233,7 +233,7 @@ while running:
                     boundary = boundary.move_ip(
                         (move_direction['up']*p1.moving))
                 # set correct image for animation
-                p1.update(dx)
+                p1.update(dx, tile_size)
                 # draw background
                 screen.blit(background, background_loc)
                 # draw player
