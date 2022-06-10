@@ -1,17 +1,22 @@
 import pygame
 from pygame.locals import *
 
+# TODO: check scalability
+
 
 class Player:
     def __init__(self, screen_w, screen_h, fps):
-        self.image = './img/PlayerDown_1.png'
+        self.image = './img/player/PlayerDown_1.png'
         # 0 - Down, 1 - Left, 2 - Right, 3 - Up
         self.images = [
-            ['./img/PlayerDown_1.png', './img/PlayerDown_2.png',
-                './img/PlayerDown_3.png'],
-            ['img/playerLeft0.png', 'img/playerLeft1.png', 'img/playerLeft2.png'],
-            ['img/playerRight0.png', 'img/playerRight1.png', 'img/playerRight2.png'],
-            ['img/playerUp0.png', 'img/playerUp1.png', 'img/playerUp2.png']
+            ['./img/player/PlayerDown_1.png', './img/player/PlayerDown_2.png',
+                './img/player/PlayerDown_3.png'],
+            ['img/player/playerLeft0.png', 'img/player/playerLeft1.png',
+                'img/player/playerLeft2.png'],
+            ['img/player/playerRight0.png', 'img/player/playerRight1.png',
+                'img/player/playerRight2.png'],
+            ['img/player/playerUp0.png', 'img/player/playerUp1.png',
+                'img/player/playerUp2.png']
         ]
         self.position = Rect(screen_w / 2, screen_h / 2, 16, 16)
         self.rendered = 0

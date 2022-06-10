@@ -5,16 +5,20 @@
 # TODO: scale up images (without messing with Rects and movement) -- partial (collisions don't scale with screen size)
 # TODO: add offset for player spawn -- done
 # TODO: add player walk animation  -- line 137 and player.py -- done
-# TODO: add map transitions for buildings/new map segments
+# TODO: add map transitions for buildings/new map segments  -- CURRENT (just completed: refactored 'background' into Map class)
+# TODO: add game state transitions -- CURRENT
 # TODO: make player move entire time key is pressed -- done
+# TODO: make boundaries have class of sprite?
 
 
 import sys
+from tkinter import Menu
 import pygame
 import csv
 from pygame.locals import *
 from player import Player
 from map import Map
+from game_states import menu
 
 pygame.init()
 
@@ -53,12 +57,12 @@ pygame.display.set_caption("PokeGame")
 screen.fill((20, 200, 50))
 
 # load images
-background = pygame.image.load("./img/testMap.png").convert_alpha()
-background = pygame.transform.scale(
-    background, (background.get_width()*mag, background.get_height()*mag))
-background_loc = background.get_rect(topleft=(level.offset))
+# background = pygame.image.load(level.image).convert_alpha()
+# background = pygame.transform.scale(
+#     background, (level.width*tile_size, level.height*tile_size))
+# background_loc = background.get_rect(topleft=(level.offset))
 # background_loc.center = screen_width/2, screen_height/2
-player = pygame.image.load("./img/PlayerDown_1.png").convert_alpha()
+# player = pygame.image.load("./img/PlayerDown_1.png").convert_alpha()
 
 # to get one slice of animation from image
 # player1 = player.subsurface(0, 0, player.get_width()/4, player.get_height())
@@ -79,26 +83,29 @@ player_hitbox = Rect(p1.position.left, p1.position.top +
                      scale, tile_size, tile_size)
 
 # Add collisions from csv file
-collisionsMap = []
-with open('./data/testmapLayers_Collision.csv', 'r') as file:
-    reader = csv.reader(file)
-    for row in reader:
-        collisionsMap.append(row)
-boundaries = []
-for i, row in enumerate(collisionsMap):
-    for j, tile in enumerate(row):
-        if tile == '0':
-            boundaries.append(
-                Rect(j * tile_size - (level.offset[1]), i * tile_size - (level.offset[0]), tile_size, tile_size))
+# collisionsMap = []
+# with open('./data/testMap3/testMap3_Collision.csv', 'r') as file:
+#     reader = csv.reader(file)
+#     for row in reader:
+#         collisionsMap.append(row)
+# boundaries = []
+# for i, row in enumerate(collisionsMap):
+#     for j, tile in enumerate(row):
+#         if tile == '0':
+#             boundaries.append(
+#                 Rect(j * tile_size - (level.offset[1]), i * tile_size - (level.offset[0]), tile_size, tile_size))
+boundaries = level.collisions(tile_size)
 
 # initial load
-screen.blit(background, background_loc)
+# screen.blit(background, background_loc)
+level.load(tile_size, screen_width)
+level.render(screen)
 p1.draw(mag, screen)
 pygame.display.update()
 print(dx < destination)
+
 # MAIN GAME LOOP
 while running:
-    # screen.fill((20, 200, 50))
 
     #   change frame rate
     clock = pygame.time.Clock()
@@ -109,7 +116,8 @@ while running:
     dx = 0
     p1.reset()
     screen.fill((20, 200, 50))
-    screen.blit(background, background_loc)
+    level.render(screen)
+    # screen.blit(background, background_loc)
     p1.draw(mag, screen)
     pygame.display.update()
     # player1 = player.subsurface(
@@ -140,7 +148,7 @@ while running:
 
             # walking animation loop
             while dx < destination:
-                background_loc = background_loc.move(
+                level.position = level.position.move(
                     (move_direction['left']*p1.moving))
                 for boundary in boundaries:
                     boundary = boundary.move_ip(
@@ -148,7 +156,7 @@ while running:
                 # set correct image for animation
                 p1.update(dx, tile_size)
                 # draw background
-                screen.blit(background, background_loc)
+                level.render(screen)
                 # draw player
                 p1.draw(mag, screen)
                 pygame.display.update()
@@ -169,7 +177,7 @@ while running:
 
             # walking animation loop
             while dx < destination:
-                background_loc = background_loc.move(
+                level.position = level.position.move(
                     (move_direction['down']*p1.moving))
                 for boundary in boundaries:
                     boundary = boundary.move_ip(
@@ -177,7 +185,7 @@ while running:
                 # set correct image for animation
                 p1.update(dx, tile_size)
                 # draw background
-                screen.blit(background, background_loc)
+                level.render(screen)
                 # draw player
                 p1.draw(mag, screen)
                 pygame.display.update()
@@ -198,7 +206,7 @@ while running:
 
             # walking animation loop
             while dx < destination:
-                background_loc = background_loc.move(
+                level.position = level.position.move(
                     (move_direction['right']*p1.moving))
                 for boundary in boundaries:
                     boundary = boundary.move_ip(
@@ -206,7 +214,7 @@ while running:
                 # set correct image for animation
                 p1.update(dx, tile_size)
                 # draw background
-                screen.blit(background, background_loc)
+                level.render(screen)
                 # draw player
                 p1.draw(mag, screen)
                 pygame.display.update()
@@ -227,7 +235,7 @@ while running:
 
             # walking animation loop
             while dx < destination:
-                background_loc = background_loc.move(
+                level.position = level.position.move(
                     (move_direction['up']*p1.moving))
                 for boundary in boundaries:
                     boundary = boundary.move_ip(
@@ -235,7 +243,7 @@ while running:
                 # set correct image for animation
                 p1.update(dx, tile_size)
                 # draw background
-                screen.blit(background, background_loc)
+                level.render(screen)
                 # draw player
                 p1.draw(mag, screen)
                 pygame.display.update()
@@ -262,7 +270,7 @@ while running:
     #     (left, top, screen_width, screen_height)
     # )
 
-  # draw collisions
+  # draw collisions - for testing only
     for boundary in boundaries:
         pygame.draw.rect(
             screen,
