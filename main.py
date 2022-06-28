@@ -12,15 +12,45 @@
 
 
 import sys
-from tkinter import Menu
 import pygame
 import csv
 from pygame.locals import *
 from player import Player
 from map import Map
-from game_states import menu
+from game_states.title import Title
 
-pygame.init()
+
+# Adding Game class
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.SCREEN_WIDTH, self.SCREEN_HEIGHT = 1280, 720
+        self.screen = pygame.display.set_mode(
+            self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
+        self.state_stack = []
+        self.start()
+
+    def game_loop(self):
+        # get_events
+        # update()
+
+        # render()
+        pass
+
+    def start(self):
+        self.title_menu = Title()
+        self.state_stack.append(self.title_menu)
+        pass
+
+    def update(self):
+        self.state_stack[-1].update()
+
+    def render(self):
+        # TODO: This is current WIP
+        canvas_info = self.state_stack[-1].render()
+        screen.blit(pygame.transform.scale(
+            canvas_info[0], (self.SCREEN_WIDTH, self.SCREEN_HEIGHT)), canvas_info[1])
+
 
 frame = 1
 scale = 16

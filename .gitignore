@@ -3,3 +3,5 @@ __pycache__/*
 test.py
 test1.py
 game_states/__pycache__/*
+game_state_rework/__pycache__/*
+test2.py

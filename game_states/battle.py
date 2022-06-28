@@ -18,7 +18,7 @@ monsters = {'geodude':
             }
 
 
-class Monster (pygame.sprite.Sprite):
+class Monster(pygame.sprite.Sprite):
     def __init__(self, monster):
         super().__init__()
         self.image = pygame.image.load(monster['image'])
